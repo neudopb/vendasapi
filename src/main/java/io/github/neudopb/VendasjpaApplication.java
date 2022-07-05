@@ -17,30 +17,40 @@ public class VendasjpaApplication {
 	public CommandLineRunner init(@Autowired Clientes clientes) {
 		return args -> {
 			System.out.println("-----SALVANDO-----");
-			clientes.salvar(new Cliente("Neudo"));
-			clientes.salvar(new Cliente("Heitor"));
+			clientes.save(new Cliente("Neudo"));
+			clientes.save(new Cliente("Heitor"));
 
-			List<Cliente> todosClientes = clientes.listarTodos();
+			List<Cliente> todosClientes = clientes.findAll();
 			todosClientes.forEach(System.out::println);
 
 			System.out.println("-----EDITANDO-----");
 			todosClientes.forEach(c -> {
 				c.setNome(c.getNome() + " novo");
-				clientes.atualizar(c);
+				clientes.save(c);
 			});
 
-			todosClientes = clientes.listarTodos();
+			todosClientes = clientes.findAll();
 			todosClientes.forEach(System.out::println);
 
 			System.out.println("-----BUSCANDO-----");
-			clientes.buscarNome("Neud").forEach(System.out::println);
+			System.out.println("findByNomeLike");
+			clientes.findByNomeLike("%Neud%").forEach(System.out::println);
+
+			System.out.println("findByNomeOrIdOrderById");
+			clientes.findByNomeLikeOrIdOrderById("Neud%", 2).forEach(System.out::println);
+
+			System.out.println("findOneByNome");
+			System.out.println(clientes.findOneByNome("Heitor novo"));
+
+			System.out.println("existsByNome");
+			System.out.println(clientes.existsByNome("Heitor novo"));
 
 			System.out.println("-----DELETANDO-----");
-			clientes.listarTodos().forEach(c -> {
-				clientes.deletar(c);
+			clientes.findAll().forEach(c -> {
+				clientes.delete(c);
 			});
 
-			todosClientes = clientes.listarTodos();
+			todosClientes = clientes.findAll();
 			if (todosClientes.isEmpty()) {
 				System.out.println("Lista vazia");
 			} else {
