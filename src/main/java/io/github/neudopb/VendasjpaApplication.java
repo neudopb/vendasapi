@@ -1,20 +1,27 @@
 package io.github.neudopb;
 
 import io.github.neudopb.domain.entity.Cliente;
+import io.github.neudopb.domain.entity.Pedido;
 import io.github.neudopb.domain.repository.ClienteRepository;
+import io.github.neudopb.domain.repository.PedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootApplication
 public class VendasjpaApplication {
 
 	@Bean
-	public CommandLineRunner init(@Autowired ClienteRepository clienteRepository) {
+	public CommandLineRunner init(
+			@Autowired ClienteRepository clienteRepository,
+			@Autowired PedidoRepository pedidoRepository
+	) {
 		return args -> {
 			System.out.println("-----SALVANDO-----");
 			clienteRepository.save(new Cliente("Neudo"));
@@ -57,6 +64,23 @@ public class VendasjpaApplication {
 			} else {
 				todosClientes.forEach(System.out::println);
 			}
+
+			System.out.println("-----PEDIDO-----");
+			Cliente cliente = new Cliente("Neudo");
+			clienteRepository.save(cliente);
+
+			Pedido pedido = new Pedido();
+			pedido.setCliente(cliente);
+			pedido.setDataPedido(LocalDate.now());
+			pedido.setTotal(BigDecimal.valueOf(50));
+
+			pedidoRepository.save(pedido);
+
+			Cliente clientes = clienteRepository.findClienteFetchPedidos(cliente.getId());
+			System.out.println(clientes);
+			System.out.println(clientes.getPedidos());
+
+			pedidoRepository.findByCliente(cliente).forEach(System.out::println);
 		};
 	}
 
