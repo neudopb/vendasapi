@@ -30,10 +30,23 @@ public class ClienteController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/save")
+    @PostMapping
     @ResponseBody
     public ResponseEntity<Cliente> save(@RequestBody Cliente cliente) {
         Cliente newCliente = repository.save(cliente);
         return ResponseEntity.ok(newCliente);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity delete(@PathVariable Integer id) {
+        Optional<Cliente> cliente = repository.findById(id);
+
+        if (cliente.isPresent()) {
+            repository.delete(cliente.get());
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
