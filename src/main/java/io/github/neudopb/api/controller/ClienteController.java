@@ -49,4 +49,16 @@ public class ClienteController {
 
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity update(@PathVariable Integer id, @RequestBody Cliente cliente) {
+        return repository
+                .findById(id)
+                .map(clientePut -> {
+                    cliente.setId(clientePut.getId());
+                    repository.save(cliente);
+                    return ResponseEntity.noContent().build();
+                }).orElseGet( () -> ResponseEntity.notFound().build());
+    }
 }
