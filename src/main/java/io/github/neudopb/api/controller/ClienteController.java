@@ -53,7 +53,7 @@ public class ClienteController {
                 .map(clientePut -> {
                     cliente.setId(clientePut.getId());
                     repository.save(cliente);
-                    return ResponseEntity.noContent().build();
+                    return clientePut;
                 }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado"));
     }
 
