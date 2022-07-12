@@ -11,6 +11,7 @@ import io.github.neudopb.domain.repository.ClienteRepository;
 import io.github.neudopb.domain.repository.ItemPedidoRepository;
 import io.github.neudopb.domain.repository.PedidoRepository;
 import io.github.neudopb.domain.repository.ProdutoRepository;
+import io.github.neudopb.exception.PedidoNaoEncontradoException;
 import io.github.neudopb.exception.RegraNegocioException;
 import io.github.neudopb.service.PedidoService;
 import org.springframework.stereotype.Service;
@@ -65,7 +66,18 @@ public class PedidoServiceImpl implements PedidoService {
         return repository.findByIdFetchItens(id);
     }
 
-    public List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens) {
+    @Override
+    @Transactional
+    public void atualizarStatus(Integer id, StatusPedido statusPedido) {
+        repository
+                .findById(id)
+                .map(pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return repository.save(pedido);
+                }).orElseThrow(() -> new PedidoNaoEncontradoException());
+    }
+
+    private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens) {
         if(itens.isEmpty()) {
             throw new RegraNegocioException("Não é possível realizar um pedido sem itens!");
         }

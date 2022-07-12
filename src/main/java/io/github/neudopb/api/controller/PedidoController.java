@@ -1,10 +1,12 @@
 package io.github.neudopb.api.controller;
 
+import io.github.neudopb.api.dto.AtualizacaoStatusPedidoDTO;
 import io.github.neudopb.api.dto.InfoItemPedidoDTO;
 import io.github.neudopb.api.dto.InfoPedidoDTO;
 import io.github.neudopb.api.dto.PedidoDTO;
 import io.github.neudopb.domain.entity.ItemPedido;
 import io.github.neudopb.domain.entity.Pedido;
+import io.github.neudopb.domain.enums.StatusPedido;
 import io.github.neudopb.service.PedidoService;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +43,14 @@ public class PedidoController {
                 .map(pedido -> converter(pedido))
                 .orElseThrow(() ->
                         new ResponseStatusException(NOT_FOUND, "Pedido não encontrado!"));
+    }
+
+    @PatchMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id,
+                             @RequestBody AtualizacaoStatusPedidoDTO dto) {
+        String novoStatus = dto.getNovoStatus();
+        service.atualizarStatus(id, StatusPedido.valueOf(novoStatus));
     }
 
     private InfoPedidoDTO converter(Pedido pedido) {
