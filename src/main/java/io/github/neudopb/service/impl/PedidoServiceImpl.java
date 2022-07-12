@@ -6,6 +6,7 @@ import io.github.neudopb.domain.entity.Cliente;
 import io.github.neudopb.domain.entity.ItemPedido;
 import io.github.neudopb.domain.entity.Pedido;
 import io.github.neudopb.domain.entity.Produto;
+import io.github.neudopb.domain.enums.StatusPedido;
 import io.github.neudopb.domain.repository.ClienteRepository;
 import io.github.neudopb.domain.repository.ItemPedidoRepository;
 import io.github.neudopb.domain.repository.PedidoRepository;
@@ -48,6 +49,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itemPedido = converterItens(pedido, dto.getItens());
         repository.save(pedido);
