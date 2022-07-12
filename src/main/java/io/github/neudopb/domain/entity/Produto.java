@@ -1,9 +1,15 @@
 package io.github.neudopb.domain.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Set;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "produto")
 public class Produto {
@@ -17,53 +23,6 @@ public class Produto {
     private String descricao;
 
     @Column(name = "preco_unitario")
-    private BigDecimal precoUnitario;
+    private BigDecimal preco;
 
-    public Produto() {
-
-    }
-
-    public Produto(String descricao, BigDecimal precoUnitario) {
-        this.descricao = descricao;
-        this.precoUnitario = precoUnitario;
-    }
-
-    public Produto(Integer id, String descricao, BigDecimal precoUnitario) {
-        this.id = id;
-        this.descricao = descricao;
-        this.precoUnitario = precoUnitario;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public BigDecimal getPrecoUnitario() {
-        return precoUnitario;
-    }
-
-    public void setPrecoUnitario(BigDecimal precoUnitario) {
-        this.precoUnitario = precoUnitario;
-    }
-
-    @Override
-    public String toString() {
-        return "Produto{" +
-                "id=" + id +
-                ", descricao='" + descricao + '\'' +
-                ", precoUnitario=" + precoUnitario +
-                '}';
-    }
 }
