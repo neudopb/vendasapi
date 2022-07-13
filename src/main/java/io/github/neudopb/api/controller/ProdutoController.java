@@ -38,7 +38,7 @@ public class ProdutoController {
                     repository.save(produto);
                     return produtoPut;
                 }).orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "Produto não encontrado"));
+                        new ResponseStatusException(NOT_FOUND, "Produto não encontrado."));
     }
 
     @DeleteMapping("{id}")
@@ -50,7 +50,7 @@ public class ProdutoController {
                     repository.delete(produto);
                     return Void.TYPE;
                 }).orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "Produto não encontrado"));
+                        new ResponseStatusException(NOT_FOUND, "Produto não encontrado."));
     }
 
     @GetMapping("{id}")
@@ -58,7 +58,7 @@ public class ProdutoController {
         return repository
                 .findById(id)
                 .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "Produto não encontrado"));
+                        new ResponseStatusException(NOT_FOUND, "Produto não encontrado."));
     }
 
     @GetMapping

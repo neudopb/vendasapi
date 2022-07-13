@@ -45,7 +45,7 @@ public class PedidoServiceImpl implements PedidoService {
         Integer idCliente = dto.getCliente();
         Cliente cliente = clienteRepository
                 .findById(idCliente)
-                .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido!"));
+                .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 
         Pedido pedido = new Pedido();
         pedido.setTotal(dto.getTotal());
@@ -79,7 +79,7 @@ public class PedidoServiceImpl implements PedidoService {
 
     private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens) {
         if(itens.isEmpty()) {
-            throw new RegraNegocioException("Não é possível realizar um pedido sem itens!");
+            throw new RegraNegocioException("{campo.itens-pedido.obrigatorio}");
         }
 
         return itens

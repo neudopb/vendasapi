@@ -43,7 +43,7 @@ public class PedidoController {
                 .obterPedido(id)
                 .map(pedido -> converter(pedido))
                 .orElseThrow(() ->
-                        new ResponseStatusException(NOT_FOUND, "Pedido não encontrado!"));
+                        new ResponseStatusException(NOT_FOUND, "Pedido não encontrado."));
     }
 
     @PatchMapping("{id}")
