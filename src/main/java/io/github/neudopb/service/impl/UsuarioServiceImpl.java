@@ -2,6 +2,7 @@ package io.github.neudopb.service.impl;
 
 import io.github.neudopb.domain.entity.Usuario;
 import io.github.neudopb.domain.repository.UsuarioRepository;
+import io.github.neudopb.exception.SenhaInvalidaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +24,17 @@ public class UsuarioServiceImpl implements UserDetailsService {
     @Transactional
     public Usuario salvar(Usuario usuario) {
         return repository.save(usuario);
+    }
+
+    public UserDetails autenticar(Usuario usuario) {
+        UserDetails user = loadUserByUsername(usuario.getUsername());
+        boolean senhaValida = encoder.matches(usuario.getPassword(), user.getPassword());
+
+        if(senhaValida) {
+            return user;
+        }
+
+        throw new SenhaInvalidaException();
     }
 
     @Override

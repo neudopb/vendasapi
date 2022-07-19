@@ -1,14 +1,11 @@
 package io.github.neudopb.security.jwt;
 
-import io.github.neudopb.VendasjpaApplication;
 import io.github.neudopb.domain.entity.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -64,15 +61,4 @@ public class JwtService {
         return (String) obterClaims(token).getSubject();
     }
 
-    public static void main(String[] args) {
-        ConfigurableApplicationContext contexto = SpringApplication.run(VendasjpaApplication.class);
-        JwtService service = contexto.getBean(JwtService.class);
-        Usuario usuario = Usuario.builder().username("admin").build();
-        String token = service.gerarToken(usuario);
-        System.out.println(token);
-
-        System.out.println("Token valido: " + service.tokenValido(token));
-
-        System.out.println("Login usuário: " + service.obterLoginUsuario(token));
-    }
 }
