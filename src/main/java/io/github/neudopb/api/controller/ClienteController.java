@@ -2,6 +2,10 @@ package io.github.neudopb.api.controller;
 
 import io.github.neudopb.domain.entity.Cliente;
 import io.github.neudopb.domain.repository.ClienteRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +18,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/clientes")
+@Api("API Clientes")
 public class ClienteController {
 
     private ClienteRepository repository;
@@ -24,12 +29,22 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(CREATED)
+    @ApiOperation("Salvar novo Cliente")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Cliente salvo com sucesso"),
+            @ApiResponse(code = 404, message = "Erro de validação")
+    })
     public Cliente save(@RequestBody @Valid Cliente cliente) {
         return repository.save(cliente);
     }
 
     @PutMapping("{id}")
     @ResponseStatus(NO_CONTENT)
+    @ApiOperation("Editar Cliente")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Cliente atualizado com sucesso"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado")
+    })
     public void update(@PathVariable Integer id, @RequestBody @Valid Cliente cliente) {
         repository
                 .findById(id)
@@ -42,6 +57,11 @@ public class ClienteController {
 
     @DeleteMapping("{id}")
     @ResponseStatus(NO_CONTENT)
+    @ApiOperation("Deletar Cliente")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Cliente deletado com sucesso"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado")
+    })
     public void delete(@PathVariable Integer id) {
         repository.findById(id)
                 .map(cliente -> {
@@ -51,6 +71,11 @@ public class ClienteController {
     }
 
     @GetMapping("{id}")
+    @ApiOperation("Obter detalhes de um Cliente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Cliente encontrado"),
+            @ApiResponse(code = 404, message = "Cliente não encontrado")
+    })
     public Cliente getClienteById(@PathVariable Integer id) {
         return repository
                 .findById(id)
@@ -59,6 +84,8 @@ public class ClienteController {
     }
 
     @GetMapping
+    @ApiOperation("Buscar por Clientes")
+    @ApiResponse(code = 200, message = "Clientes encontrados")
     public List<Cliente> find(Cliente filtro) {
         ExampleMatcher matcher = ExampleMatcher
                                     .matching()

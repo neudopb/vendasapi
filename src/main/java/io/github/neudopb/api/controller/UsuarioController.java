@@ -6,6 +6,10 @@ import io.github.neudopb.domain.entity.Usuario;
 import io.github.neudopb.exception.SenhaInvalidaException;
 import io.github.neudopb.security.jwt.JwtService;
 import io.github.neudopb.service.impl.UsuarioServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +23,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/usuarios")
 @RequiredArgsConstructor
+@Api("API Usuarios")
 public class UsuarioController {
 
     private final UsuarioServiceImpl usuarioService;
@@ -27,6 +32,11 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation("Cadastrar usuário")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Usuário cadastrado com sucesso"),
+            @ApiResponse(code = 404, message = "Erro de validação")
+    })
     public Usuario salvar(@RequestBody @Valid Usuario usuario) {
         String senhaCript = encoder.encode(usuario.getPassword());
         usuario.setPassword(senhaCript);
@@ -35,6 +45,11 @@ public class UsuarioController {
     }
 
     @PostMapping("/auth")
+    @ApiOperation("Autenticar Usuário")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Usuário autenticado com sucesso"),
+            @ApiResponse(code = 404, message = "Usuário não encontrado")
+    })
     public TokenDTO autenticar(@RequestBody CredenciaisDTO credenciais) {
         try {
             Usuario usuario = Usuario.builder()
