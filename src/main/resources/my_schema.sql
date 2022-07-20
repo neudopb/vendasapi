@@ -36,3 +36,6 @@ CREATE TABLE ITEM_PEDIDO (
 --cd .\target\
 --java -jar .\vendasjpa-0.0.1-SNAPSHOT.jar
 --java -jar .\vendasjpa-0.0.1-SNAPSHOT.war
+
+--mvn clean package -P desenvolvimento
+--mvn clean package -P producao
