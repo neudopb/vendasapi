@@ -31,3 +31,8 @@ CREATE TABLE ITEM_PEDIDO (
     PRODUTO_ID INTEGER REFERENCES PRODUTO (ID),
     QUANTIDADE INTEGER
 );
+
+--mvn clean package
+--cd .\target\
+--java -jar .\vendasjpa-0.0.1-SNAPSHOT.jar
+--java -jar .\vendasjpa-0.0.1-SNAPSHOT.war
